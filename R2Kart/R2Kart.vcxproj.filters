@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Sensor">
+      <UniqueIdentifier>{5c2c6375-a758-41bb-8551-8b1aa935a88f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SensorData">
+      <UniqueIdentifier>{00d229d0-92d2-4aef-9b41-b1196b0accdf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Sensor">
+      <UniqueIdentifier>{58d2b2c7-8d8e-4013-8c7f-9a5832646b8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SensorData">
+      <UniqueIdentifier>{bbf9995d-77b6-48c5-a03e-fc11ca4b2567}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LidarSensor.h">
+      <Filter>Header Files\Sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="Sensor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UltrasoundSensor.h">
+      <Filter>Header Files\Sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="R2State.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HighwaySensor.h">
+      <Filter>Header Files\Sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="IMUSensor.h">
+      <Filter>Header Files\Sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="KinectSensor.h">
+      <Filter>Header Files\Sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="EncoderSensor.h">
+      <Filter>Header Files\Sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="EncoderData.h">
+      <Filter>Header Files\SensorData</Filter>
+    </ClInclude>
+    <ClInclude Include="HighwayData.h">
+      <Filter>Header Files\SensorData</Filter>
+    </ClInclude>
+    <ClInclude Include="IMUData.h">
+      <Filter>Header Files\SensorData</Filter>
+    </ClInclude>
+    <ClInclude Include="KinectData.h">
+      <Filter>Header Files\SensorData</Filter>
+    </ClInclude>
+    <ClInclude Include="LidarData.h">
+      <Filter>Header Files\SensorData</Filter>
+    </ClInclude>
+    <ClInclude Include="UltrasoundData.h">
+      <Filter>Header Files\SensorData</Filter>
+    </ClInclude>
+    <ClInclude Include="SensorDataBag.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="R2Kart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sensor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LidarSensor.cpp">
+      <Filter>Source Files\Sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="HighwaySensor.cpp">
+      <Filter>Source Files\Sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="UltrasoundSensor.cpp">
+      <Filter>Source Files\Sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="KinectSensor.cpp">
+      <Filter>Source Files\Sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="IMUSensor.cpp">
+      <Filter>Source Files\Sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="EncoderSensor.cpp">
+      <Filter>Source Files\Sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="EncoderData.cpp">
+      <Filter>Source Files\SensorData</Filter>
+    </ClCompile>
+    <ClCompile Include="HighwayData.cpp">
+      <Filter>Source Files\SensorData</Filter>
+    </ClCompile>
+    <ClCompile Include="IMUData.cpp">
+      <Filter>Source Files\SensorData</Filter>
+    </ClCompile>
+    <ClCompile Include="KinectData.cpp">
+      <Filter>Source Files\SensorData</Filter>
+    </ClCompile>
+    <ClCompile Include="LidarData.cpp">
+      <Filter>Source Files\SensorData</Filter>
+    </ClCompile>
+    <ClCompile Include="UltrasoundData.cpp">
+      <Filter>Source Files\SensorData</Filter>
+    </ClCompile>
+    <ClCompile Include="SensorDataBag.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
