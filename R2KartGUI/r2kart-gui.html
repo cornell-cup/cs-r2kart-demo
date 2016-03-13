@@ -1,0 +1,135 @@
+<html>
+    <head>
+        <title>R2 Kart Demo Day GUI</title>
+<!--
+Credits to http://pixeloz.deviantart.com/art/R2-D2-Free-3D-Blender-Model-Conversion-Ver-1-0-432621912 for the original R2 model. Slightly modified and rendered in Blender for the resulting icon.
+-->
+        <meta charset="UTF-8" />
+        <script type="text/javascript" src="http://cdn.socket.io/socket.io-1.4.5.js"></script>
+        <script type="text/javascript">
+//
+var $ = function(o) { return document.querySelector(o); };
+
+var sio = io("ws://" + ((location.search.length > 1) ? location.search.substring(1) : location.hostname) + ":9100");
+
+var canvas, ctx, notif;
+var r2state, r2icon;
+window.addEventListener("load", function() {
+    canvas = $("#screen");
+    ctx = canvas.getContext("2d");
+    notif = $("#notif");
+    
+    r2state = {
+        positionX: 0.0,
+        positionY: 0.0,
+        rotation: 0.0,
+        obstacles: [],
+        highway: false,
+        ultrasound: false
+    };
+    
+    r2icon = document.createElement("img");
+    r2icon.src = "r2icon_small.png";
+    
+    frame(r2state);
+});
+
+sio.on("state", function(newstate) {
+    r2state = newstate;
+    frame(r2state);
+});
+
+function frame(state) {
+    if (state.highway) {
+        $("#notif_highway").style.backgroundColor = "green";
+    }
+    else {
+        $("#notif_highway").style.backgroundColor = "red";
+    }
+    
+    // Clear
+    ctx.clearRect(0, 0, 640, 640);
+    
+    // Save transform
+    ctx.save();
+    
+    // Coordinate transform
+    ctx.translate(320 - state.positionX, 320 + state.positionY);
+    ctx.scale(1, -1);
+    
+    // Origin
+    ctx.fillStyle = "red";
+    ctx.fillRect(-16, -16, 32, 32);
+    
+    // Grid
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    var bx = ~~((state.positionX) / 80);
+    var by = ~~((state.positionY) / 80);
+    for (var i = -6; i <= 6; i++) {
+        ctx.moveTo(80 * (bx + i), 80 * (by - 6));
+        ctx.lineTo(80 * (bx + i), 80 * (by + 6));
+        ctx.moveTo(80 * (bx - 6), 80 * (by + i));
+        ctx.lineTo(80 * (bx + 6), 80 * (by + i));
+    }
+    ctx.stroke();
+    
+    // Restore transform
+    ctx.restore();
+    
+    // R2 icon
+    ctx.save();
+    ctx.translate(320, 320);
+    ctx.rotate(state.rotation);
+    ctx.drawImage(r2icon, -32, -32, 64, 64);
+    ctx.restore();
+    
+    // Send a new request
+    sio.emit("req");
+}
+//
+        </script>
+        <style type="text/css">
+/**/
+body {
+    margin: 0px;
+    padding: 0px;
+}
+
+#screen {
+    border: 1px solid black;
+    float: left;
+    margin: 10px;
+}
+
+#notif {
+    float: left;
+    margin: 10px;
+    width: 480px;
+    
+    font-size: 4em;
+    text-align: center;
+    color: white;
+    text-shadow:
+       -1px -1px 0 black,  
+        1px -1px 0 black,
+        -1px 1px 0 black,
+         1px 1px 0 black;
+}
+
+#notif div {
+    padding: 10px;
+}
+/**/
+        </style>
+    </head>
+    <body>
+    
+    <canvas id="screen" width="640" height="640"></canvas>
+    <div id="notif">
+        <div id="notif_highway">Highway</div>
+    </div>
+    
+    </body>
+</html>
