@@ -143,12 +143,14 @@ int main()
 	// Forever
 	while (true) {
 		// Grab the new sensor data
-		SensorDataBag * sdata = NULL;
+		SensorDataBag * sdata = new SensorDataBag();
 		getSensorData(sensorList, sdata);
 		// Update the R2 state new sensor data
 		R2State state = updateState(sdata);
 		// Send the updated state to the GUI
 		sendToGui(state);
+		// Delete the data bag
+		delete sdata;
 		// DEBUG wait for 5 seconds
 		Sleep(5000);
 	}
