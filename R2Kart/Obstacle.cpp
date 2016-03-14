@@ -1,10 +1,9 @@
 #include "stdafx.h"
 #include "Obstacle.h"
 
-Obstacle::Obstacle(double inPosX = 0.0, double inPosY = 0.0, double inRadius = 0.0) {
-	positionX = inPosX;
-	positionY = inPosY;
-	radius = inRadius;
+Obstacle::Obstacle(double inPosX = 0.0, double inPosY = 0.0, double inRadius = 0.0)
+	: positionX(inPosX), positionY(inPosY), radius(inRadius) {
+
 }
 
 Obstacle::~Obstacle() {
