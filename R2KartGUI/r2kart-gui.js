@@ -21,6 +21,9 @@ var server = net.createServer(function(conn) {
     conn.on("data", function(data) {
         console.log(data.toString());
     });
+    conn.on("error", function() {
+        console.log("Provider error");
+    });
     conn.on("end", function() {
         console.log("Provider disconnected");
     });
