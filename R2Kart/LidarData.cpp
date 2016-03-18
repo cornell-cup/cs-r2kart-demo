@@ -1,4 +1,11 @@
 #include "stdafx.h"
 #include "LidarData.h"
 
-// TODO LidarData.cpp and LidarData.h
+LidarData::LidarData(double[] inAngles, double[] inDistances) :
+	angles(inAngles), distances(inDistances) {
+
+}
+
+LidarData::~LidarData() {
+
+}

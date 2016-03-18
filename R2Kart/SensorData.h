@@ -2,7 +2,13 @@
 
 class SensorData {
 protected:
-	// Private/protected variables here
+
 public:
-	// Public variables here
+	SensorData(bool data);
+	~SensorData();
+
+	/*
+	* Sensor availability
+	*/
+	bool hasData;
 };

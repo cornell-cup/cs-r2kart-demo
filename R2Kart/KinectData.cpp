@@ -1,4 +1,11 @@
 #include "stdafx.h"
 #include "KinectData.h"
 
-// TODO KinectData.cpp and KinectData.h
+KinectData::KinectData(Image inCamera, Image inDepth) 
+	: camera(inCamera), depth(inDepth) {
+
+}
+
+KinectData::~KinectData() {
+
+}

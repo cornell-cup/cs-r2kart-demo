@@ -1,4 +1,10 @@
 #include "stdafx.h"
 #include "HighwayData.h"
 
-// TODO HighwayData.cpp and HighwayData.h
+HighwayData::HighwayData(bool inDetected, long inDetectionTime) {
+
+}
+
+HighwayData::~HighwayData() {
+
+}

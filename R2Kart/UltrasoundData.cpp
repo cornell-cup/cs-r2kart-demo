@@ -1,4 +1,10 @@
 #include "stdafx.h"
 #include "UltrasoundData.h"
 
-// TODO UltrasoundData.cpp and UltrasoundData.h
+UltrasoundData::UltrasoundData(double[] inDistances) : distances(inDistances) {
+
+}
+
+UltrasoundData::~UltrasoundData() {
+	
+}
