@@ -9,6 +9,10 @@ public:
 	~UltrasoundData();
 
 	/*
+	* Sensor availability
+	*/
+	bool hasData;
+	/*
 	* Array of distances for each individual ultrasound sensor
 	*/
 	double[] distances;

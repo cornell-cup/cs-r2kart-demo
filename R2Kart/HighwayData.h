@@ -9,6 +9,10 @@ public:
 	~HighwayData();
 
 	/*
+	* Sensor availability
+	*/
+	bool hasData;
+	/*
 	* Highway line detected or not
 	*/
 	bool detected;

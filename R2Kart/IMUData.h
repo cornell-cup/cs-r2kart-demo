@@ -10,7 +10,7 @@ public:
 	~IMUData();
 
 	/*
-	* Variables
+	* Sensor availability
 	*/
 	bool hasData;
 	/*

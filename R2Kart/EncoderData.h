@@ -9,6 +9,10 @@ public:
 	~EncoderData();
 
 	/*
+	* Sensor availability
+	*/
+	bool hasData;
+	/*
 	* Value of the left motor
 	*/
 	int leftMotor;

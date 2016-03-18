@@ -9,6 +9,10 @@ public:
 	~KinectData();
 
 	/*
+	* Sensor availability
+	*/
+	bool hasData;
+	/*
 	* Image seen through the camera
 	*/
 	Image camera;

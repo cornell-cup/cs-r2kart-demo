@@ -9,6 +9,10 @@ public:
 	~LidarData();
 
 	/*
+	* Sensor availability
+	*/
+	bool hasData;
+	/*
 	* Array of angles for each point returned
 	*/
 	double[] angles;
