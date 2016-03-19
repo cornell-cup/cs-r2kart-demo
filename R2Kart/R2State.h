@@ -18,7 +18,7 @@ public:
 	 */
 	R2State(double inPosX = 0.0, double inPosY = 0.0, double inRot = 0.0,
 		std::vector<Obstacle> inObstacles = std::vector<Obstacle>(), bool inHighway = false,
-		std::vector<bool> inUltrasound = std::vector<bool>());
+		std::vector<double> inUltrasound = std::vector<double>());
 
 	/**
 	 * Destructors
@@ -31,5 +31,5 @@ public:
 	double rotation;
 	std::vector<Obstacle> obstacles;
 	bool highway;
-	std::vector<bool> ultrasound;
+	std::vector<double> ultrasound;
 };
