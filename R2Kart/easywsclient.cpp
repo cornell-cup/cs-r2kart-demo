@@ -503,6 +503,55 @@ easywsclient::WebSocket::pointer from_url(const std::string& url, bool useMask, 
     return easywsclient::WebSocket::pointer(new _RealWebSocket(sockfd, useMask));
 }
 
+easywsclient::WebSocket::pointer from_direct(char host[128], int port, char path[128], const std::string& origin) {
+	fprintf(stderr, "easywsclient: connecting: host=%s port=%d path=/%s\n", host, port, path);
+	socket_t sockfd = hostname_connect(host, port);
+	if (sockfd == INVALID_SOCKET) {
+		fprintf(stderr, "Unable to connect to %s:%d\n", host, port);
+		return NULL;
+	}
+	{
+		// XXX: this should be done non-blocking,
+		char line[256];
+		int status;
+		int i;
+		snprintf(line, 256, "GET /%s HTTP/1.1\r\n", path); ::send(sockfd, line, strlen(line), 0);
+		if (port == 80) {
+			snprintf(line, 256, "Host: %s\r\n", host); ::send(sockfd, line, strlen(line), 0);
+		}
+		else {
+			snprintf(line, 256, "Host: %s:%d\r\n", host, port); ::send(sockfd, line, strlen(line), 0);
+		}
+		snprintf(line, 256, "Upgrade: websocket\r\n"); ::send(sockfd, line, strlen(line), 0);
+		snprintf(line, 256, "Connection: Upgrade\r\n"); ::send(sockfd, line, strlen(line), 0);
+		if (!origin.empty()) {
+			snprintf(line, 256, "Origin: %s\r\n", origin.c_str()); ::send(sockfd, line, strlen(line), 0);
+		}
+		snprintf(line, 256, "Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==\r\n"); ::send(sockfd, line, strlen(line), 0);
+		snprintf(line, 256, "Sec-WebSocket-Version: 13\r\n"); ::send(sockfd, line, strlen(line), 0);
+		snprintf(line, 256, "\r\n"); ::send(sockfd, line, strlen(line), 0);
+		for (i = 0; i < 2 || (i < 255 && line[i - 2] != '\r' && line[i - 1] != '\n'); ++i) { if (recv(sockfd, line + i, 1, 0) == 0) { return NULL; } }
+		line[i] = 0;
+		if (i == 255) { fprintf(stderr, "ERROR: Got invalid status line connecting to: host=%s port=%d path=/%s\n", host, port, path); return NULL; }
+		if (sscanf_s(line, "HTTP/1.1 %d", &status) != 1 || status != 101) { fprintf(stderr, "ERROR: Got bad status connecting to host=%s port=%d path=/%s: %s\n", host, port, path, line); return NULL; }
+		// TODO: verify response headers,
+		while (true) {
+			for (i = 0; i < 2 || (i < 255 && line[i - 2] != '\r' && line[i - 1] != '\n'); ++i) { if (recv(sockfd, line + i, 1, 0) == 0) { return NULL; } }
+			if (line[0] == '\r' && line[1] == '\n') { break; }
+		}
+	}
+	int flag = 1;
+	setsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY, (char*)&flag, sizeof(flag)); // Disable Nagle's algorithm
+#ifdef _WIN32
+	u_long on = 1;
+	ioctlsocket(sockfd, FIONBIO, &on);
+#else
+	fcntl(sockfd, F_SETFL, O_NONBLOCK);
+#endif
+	fprintf(stderr, "Connected to: host=%s port=%d path=/%s\n", host, port, path);
+	return easywsclient::WebSocket::pointer(new _RealWebSocket(sockfd, false));
+}
+
 } // end of module-only namespace
 
 
@@ -523,5 +572,8 @@ WebSocket::pointer WebSocket::from_url_no_mask(const std::string& url, const std
     return ::from_url(url, false, origin);
 }
 
+WebSocket::pointer WebSocket::from_direct(char host[128], int port, char path[128], const std::string& origin) {
+	return ::from_direct(host, port, path, origin);
+}
 
 } // namespace easywsclient

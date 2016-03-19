@@ -19,7 +19,7 @@ var r2state = {
 var server = new WebSockets.Server({ port: 9000 });
 server.on("connection", function(ws) {
     ws.on("message", function(data) {
-        console.log("Recieved %s", data);
+        console.log("Received %s", data);
     });
 });
 

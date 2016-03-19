@@ -25,6 +25,7 @@ class WebSocket {
     static pointer create_dummy();
     static pointer from_url(const std::string& url, const std::string& origin = std::string());
     static pointer from_url_no_mask(const std::string& url, const std::string& origin = std::string());
+	static pointer from_direct(char host[128], int port, char path[128], const std::string& origin = std::string());
 
     // Interfaces:
     virtual ~WebSocket() { }

@@ -92,9 +92,7 @@ WebSocket::pointer wsc;
 * Initialize a websocket connection to localhost.
 */
 void initializeWebsocket() {
-	wsc = WebSocket::from_url("ws://localhost:9000");
-	wsc->send("Test");
-	wsc->send("Hello world!");
+	wsc = WebSocket::from_direct("localhost", 9000, "");
 }
 
 /**
@@ -143,13 +141,13 @@ R2State updateState(SensorDataBag * sdata) {
 
 	// Highway
 	HighwayData * hd = sdata->highway;
-	if (hd->hasData) {
+	if (hd != NULL && hd->hasData) {
 		state.highway = hd->detected;
 	}
 
 	// Ultrasound
 	UltrasoundData * ud = sdata->ultrasound;
-	if (ud->hasData) {
+	if (ud != NULL && ud->hasData) {
 		for (int i = 0; i < ud->numSensors; i++) {
 			state.ultrasound.push_back(ud->distances[i]);
 		}
@@ -166,15 +164,11 @@ R2State updateState(SensorDataBag * sdata) {
  * @param state		The current R2 state
  */
 void sendToGui(const R2State &state) {
-	if (connection != INVALID_SOCKET) {
-		// Send data
-		// DEBUG send Hello world!
-		int wsResult = send(connection, "Hello world!", 12, 0);
-		if (wsResult == SOCKET_ERROR) {
-			closesocket(connection);
-			connection = INVALID_SOCKET;
-			WSACleanup();
-		}
+	// Send data over the connection
+	if (wsc != NULL) {
+		// Debug message
+		wsc->send("Hello world!");
+		wsc->poll();
 	}
 	return;
 }
