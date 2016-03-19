@@ -10,13 +10,14 @@ protected:
 public:
 	// Public variables here
     
-    char[] name; // name of sensor
-    float id; // unique identifier
+    std::string name; // name of sensor
+	int id; // unique identifier
+	static int count; // Number of sensors (used for ID)
 	
     /**
 	 * Sensor constructor.
 	 */
-	Sensor( char[] inName, float inId);
+	Sensor(std::string inName);
 
 	/**
 	 * Sensor destructor.

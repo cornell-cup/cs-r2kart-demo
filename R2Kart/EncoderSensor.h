@@ -31,7 +31,7 @@ public:
 	~EncoderSensor();
 
 	/**
-	 * Get data from the encoder sensors.
+	 * Get data from the encoders.
 	 * @param sdata		The pointer to the sensor data bag.
 	 */
 	void getData(SensorDataBag * sdata);

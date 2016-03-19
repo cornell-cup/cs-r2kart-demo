@@ -6,24 +6,16 @@ protected:
 	// Private/protected variables here
 public:
 	// Public variables here
-    
-    //acceleration of the R2kart
-    double acc;
-    
-    //orientation of the R2kart
-    double orientation;
-    
+
     //constructor
-    IMUSensor( double inAcc, double inOrientation);
-    
+    IMUSensor();
+
     //destructor
     ~IMUSensor();
-    
-     /**
-	 * Get data from the encoder sensors.
+
+	/**
+	 * Get data from the IMU.
 	 * @param sdata		The pointer to the sensor data bag.
 	 */
 	void getData(SensorDataBag * sdata);
-    
-    
 };

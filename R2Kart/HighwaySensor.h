@@ -4,31 +4,18 @@
 class HighwaySensor : public Sensor {
 protected:
 	// Private/protected variables here
-    
-  public:
+public:
     // Public variables here
-    
-    // tells us if the highway is approaching or not based on threshold distance
-    bool approach;
-    
-    //gives distance of approaching highway 
-    float dist;
-    
+
     //Constructor
-    HighwaySensor(bool inApproach, float inDist);
-    
+    HighwaySensor();
+
     //Destructor
     ~HighwaySensor();
-    
+
     /**
-	 * Get data from the encoder sensors.
+	 * Get data from the highway rgb sensor.
 	 * @param sdata		The pointer to the sensor data bag.
 	 */
 	void getData(SensorDataBag * sdata);
-    
-    
-    
-    
-    
-    
 };

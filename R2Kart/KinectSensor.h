@@ -6,21 +6,15 @@ protected:
 	// Private/protected variables here
 public:
 	// Public variables here
-    
-    // distance to the obstacle
-    double dist;
-    
-    //angle of the object wit respect to Kinect's filed of vision
-    double angle;
-    
+
     //Constructor
-    KinectSensor(double inDist, double inAngle);
-    
+    KinectSensor();
+
     //Destructor
     ~KinectSensor ();
-    
+
     /**
-	 * Get data from the encoder sensors.
+	 * Get data from the Kinect.
 	 * @param sdata		The pointer to the sensor data bag.
 	 */
 	void getData(SensorDataBag * sdata);
