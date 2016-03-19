@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 
+#include "easywsclient.hpp"
 #include <winsock2.h>
 #include <ws2tcpip.h>
 #pragma comment (lib, "Ws2_32.lib")
@@ -14,14 +15,16 @@
 #include "SensorData.h"
 #include "SensorDataBag.h"
 
+using easywsclient::WebSocket;
+
 /**
  * The connection to the GUI server.
  */
 SOCKET connection = INVALID_SOCKET;
 
 /**
- * Initialize a Winsock connection to localhost.
- */
+* Initialize Winsock.
+*/
 void initializeWinsock() {
 	// Variables
 	WSADATA wsaData;
@@ -29,6 +32,14 @@ void initializeWinsock() {
 
 	// Startup winsock
 	wsResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+}
+
+/**
+ * Initialize a Winsock connection to localhost.
+ */
+void initializeSocketCommunication() {
+	// Variables
+	int wsResult;
 
 	// Connection address info (loopback)
 	struct addrinfo *result = NULL, *ptr = NULL, hints;
@@ -73,12 +84,29 @@ void initializeWinsock() {
 }
 
 /**
+ * Connection to localhost server.
+ */
+WebSocket::pointer wsc;
+
+/**
+* Initialize a websocket connection to localhost.
+*/
+void initializeWebsocket() {
+	wsc = WebSocket::from_url("ws://localhost:9000");
+	wsc->send("Test");
+	wsc->send("Hello world!");
+}
+
+/**
  * Initialize things for R2Kart.
  * - Winsock (communication to GUI)
  */
 void initialize() {
 	// Winsock communication
 	initializeWinsock();
+	//initializeSocketCommunication();
+	// Websocket communication
+	initializeWebsocket();
 }
 
 /**

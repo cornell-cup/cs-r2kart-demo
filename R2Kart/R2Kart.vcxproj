@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(MSBuildProjectDirectory)\ext\armadillo\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(MSBuildProjectDirectory)\ext\armadillo;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\lib\armadillo\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\lib\armadillo;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -148,6 +148,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="easywsclient.hpp" />
     <ClInclude Include="EncoderData.h" />
     <ClInclude Include="EncoderSensor.h" />
     <ClInclude Include="HighwayData.h" />
@@ -170,6 +171,7 @@
     <ClInclude Include="UltrasoundSensor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="easywsclient.cpp" />
     <ClCompile Include="EncoderData.cpp" />
     <ClCompile Include="EncoderSensor.cpp" />
     <ClCompile Include="HighwayData.cpp" />

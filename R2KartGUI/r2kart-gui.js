@@ -3,8 +3,8 @@
 //  node .
 
 var sio = require("socket.io")();
-var net = require("net");
-var argv = require('minimist')(process.argv.slice(2));
+var WebSockets = require("ws");
+var argv = require("minimist")(process.argv.slice(2));
 
 var r2state = {
     timestamp: 0,
@@ -16,16 +16,10 @@ var r2state = {
     ultrasound: {}
 };
 
-var server = net.createServer(function(conn) {
-    console.log("Provider connected");
-    conn.on("data", function(data) {
-        console.log(data.toString());
-    });
-    conn.on("error", function() {
-        console.log("Provider error");
-    });
-    conn.on("end", function() {
-        console.log("Provider disconnected");
+var server = new WebSockets.Server({ port: 9000 });
+server.on("connection", function(ws) {
+    ws.on("message", function(data) {
+        console.log("Recieved %s", data);
     });
 });
 
@@ -46,5 +40,4 @@ sio.on("connection", function(socket) {
     });
 });
 
-server.listen(9000);
 sio.listen(9100);
