@@ -5,13 +5,9 @@ class HighwayData : public SensorData {
 protected:
 	// Private/protected variables here
 public:
-	HighwayData(bool inDetected, long inDetectionTime);
+	HighwayData(bool hasData = false, bool inDetected = false, long inDetectionTime = 0);
 	~HighwayData();
 
-	/*
-	* Sensor availability
-	*/
-	bool hasData;
 	/*
 	* Highway line detected or not
 	*/

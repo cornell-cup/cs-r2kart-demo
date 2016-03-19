@@ -5,20 +5,20 @@ class LidarData : public SensorData {
 protected:
 	// Private/protected variables here
 public:
-	LidarData(double[] inAngles, double[] inDistances);
+	LidarData(bool inData = false, int inNumReadings = 0, double * inAngles = NULL, double * inDistances = NULL);
 	~LidarData();
 
-	/*
-	* Sensor availability
-	*/
-	bool hasData;
+	/**
+	 * Number of readings
+	 */
+	int numReadings;
 	/*
 	* Array of angles for each point returned
 	*/
-	double[] angles;
+	double * angles;
 	/*
 	* Array of distances for each point returned. 
 	* Same indexes of angles[] and distance[] correspond to same point
 	*/
-	double[] distances;
+	double * distances;
 };

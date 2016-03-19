@@ -5,13 +5,9 @@ class EncoderData : public SensorData {
 protected:
 	// Private/protected variables here
 public:
-	EncoderData(int inLeftMotor, int inRightMotor, int inLastLeftMotor, int inLastRightMotor);
+	EncoderData(bool hasData = false, int inLeftMotor = 0, int inRightMotor = 0, int inLastLeftMotor = 0, int inLastRightMotor = 0);
 	~EncoderData();
 
-	/*
-	* Sensor availability
-	*/
-	bool hasData;
 	/*
 	* Value of the left motor
 	*/

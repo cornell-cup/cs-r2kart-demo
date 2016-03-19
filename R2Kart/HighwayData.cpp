@@ -2,7 +2,7 @@
 #include "HighwayData.h"
 
 HighwayData::HighwayData(bool inData, bool inDetected, long inDetectionTime) : 
-	hasData(inData), detected(inDetected), detectionTime(inDetectionTime) {
+	SensorData(inData), detected(inDetected), detectionTime(inDetectionTime) {
 
 }
 

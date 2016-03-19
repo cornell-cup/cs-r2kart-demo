@@ -5,15 +5,15 @@ class UltrasoundData : public SensorData {
 protected:
 	// Private/protected variables here
 public:
-	UltrasoundData(double[] inDistances);
+	UltrasoundData(bool hasData = false, int inNumSensors = 0, double * inDistances = NULL);
 	~UltrasoundData();
 
 	/*
-	* Sensor availability
-	*/
-	bool hasData;
+	 * Number of sensors
+	 */
+	int numSensors;
 	/*
 	* Array of distances for each individual ultrasound sensor
 	*/
-	double[] distances;
+	double * distances;
 };
