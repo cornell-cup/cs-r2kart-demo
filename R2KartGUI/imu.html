@@ -1,0 +1,85 @@
+<html>
+    <head>
+        <title>R2 Kart Demo Day GUI</title>
+<!--
+Credits to http://pixeloz.deviantart.com/art/R2-D2-Free-3D-Blender-Model-Conversion-Ver-1-0-432621912 for the original R2 model. Slightly modified and rendered in Blender for the resulting icon.
+-->
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script type="text/javascript">
+//
+var $ = function(o) { return document.querySelector(o); };
+
+window.addEventListener("load", function() {
+    var out0 = document.getElementById("output0");
+    var out1 = document.getElementById("output1");
+    var out2 = document.getElementById("output2");
+    
+    var wsc = new WebSocket("ws://" + ((location.search.length > 1) ? location.search.substring(1) : location.hostname) + ":9050");
+    wsc.onopen = function() {
+        out0.innerHTML = "open";
+    };
+    wsc.onclose = function() {
+        out0.innerHTML = "closed";
+    };
+    
+    function pad(f) {
+        while (f.length < 8) {
+            f = " " + f;
+        }
+        return f;
+    }
+    
+    window.addEventListener("devicemotion", function(event) {
+        var dbx = pad(event.acceleration.x.toFixed(3));
+        var dby = pad(event.acceleration.y.toFixed(3));
+        var dbz = pad(event.acceleration.z.toFixed(3));
+        
+        if (wsc.readyState == 1) {
+            wsc.send("0 " + event.acceleration.x + " " + event.acceleration.y + " " + event.acceleration.z);
+        }
+        
+        out1.innerHTML = [
+            "<b>Acceleration</b>",
+            dbx,
+            dby,
+            dbz
+        ].join("<br />");
+    });
+    
+    window.addEventListener("deviceorientation", function(event) {
+        var dbt = pad(event.absolute.toString());
+        var dba = pad(event.alpha.toFixed(3));
+        var dbb = pad(event.beta.toFixed(3));
+        var dbc = pad(event.gamma.toFixed(3));
+        
+        if (wsc.readyState == 1) {
+            wsc.send("1 " + event.alpha + " " + event.beta + " " + event.gamma);
+        }
+        
+        out2.innerHTML = [
+            "<b>Orientation</b>",
+            dba, dbb, dbc
+        ].join("<br />");
+    }, true);
+});
+//
+        </script>
+        <style type="text/css">
+/**/
+div {
+    font-size: 2em;
+    font-family: 'Lucida Console', monospace;
+    white-space: pre;
+}
+/**/
+        </style>
+    </head>
+    <body>
+    
+        <div id="output0">closed</div>
+        <div id="output1"></div>
+        <div id="output2"></div>
+    
+    </body>
+</html>

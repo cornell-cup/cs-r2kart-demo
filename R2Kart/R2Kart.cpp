@@ -14,6 +14,7 @@
 #include "Sensor.h"
 #include "SensorData.h"
 #include "SensorDataBag.h"
+#include "PhoneIMUSensor.h"
 
 using easywsclient::WebSocket;
 
@@ -113,7 +114,11 @@ void initialize() {
  * @return		A vector of sensors (available and not available)
  */
 std::vector<Sensor *> initializeSensors() {
-	return std::vector<Sensor *>();
+	std::vector<Sensor *> sensors;
+	Sensor * phoneimu = new PhoneIMUSensor();
+	sensors.push_back(phoneimu);
+
+	return sensors;
 }
 
 /**
@@ -154,6 +159,13 @@ R2State updateState(SensorDataBag * sdata) {
 	}
 
 	// TODO Kalman Filter IMU
+	// DEBUG position
+	IMUData * id = sdata->imu;
+	if (id != NULL && id->hasData) {
+		state.positionX = 1.0;
+		state.positionY = 1.0;
+		state.rotation = id->gyroX; // Actually Alpha, which is on the Z axis TODO fix this confusion
+	}
 
 	return state;
 }
@@ -166,9 +178,16 @@ R2State updateState(SensorDataBag * sdata) {
 void sendToGui(const R2State &state) {
 	// Send data over the connection
 	if (wsc != NULL) {
+		char buffer[80];
+		sprintf_s(buffer, "%lf %lf %lf", state.positionX, state.positionY, state.rotation);
+		std::string senddata(buffer);
+		wsc->send(senddata);
+		wsc->poll();
+		/*
 		// Debug message
 		wsc->send("Hello world!");
 		wsc->poll();
+		*/
 	}
 	return;
 }
@@ -194,8 +213,8 @@ int main()
 		sendToGui(state);
 		// Delete the data bag
 		delete sdata;
-		// DEBUG wait for 5 seconds
-		Sleep(5000);
+		// DEBUG wait
+		Sleep(50);
 	}
 
     return 0;

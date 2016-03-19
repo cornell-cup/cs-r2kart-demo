@@ -161,6 +161,7 @@
     <ClInclude Include="LidarData.h" />
     <ClInclude Include="LidarSensor.h" />
     <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="PhoneIMUSensor.h" />
     <ClInclude Include="R2State.h" />
     <ClInclude Include="Sensor.h" />
     <ClInclude Include="SensorData.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="LidarData.cpp" />
     <ClCompile Include="LidarSensor.cpp" />
     <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="PhoneIMUSensor.cpp" />
     <ClCompile Include="R2Kart.cpp" />
     <ClCompile Include="R2State.cpp" />
     <ClCompile Include="Sensor.cpp" />

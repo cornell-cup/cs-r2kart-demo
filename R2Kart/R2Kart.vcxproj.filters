@@ -93,6 +93,9 @@
     <ClInclude Include="easywsclient.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PhoneIMUSensor.h">
+      <Filter>Header Files\Sensor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="easywsclient.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PhoneIMUSensor.cpp">
+      <Filter>Source Files\Sensor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

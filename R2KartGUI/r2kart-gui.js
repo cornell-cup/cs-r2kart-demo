@@ -16,10 +16,47 @@ var r2state = {
     ultrasound: {}
 };
 
-var server = new WebSockets.Server({ port: 9000 });
-server.on("connection", function(ws) {
+var dataserver = new WebSockets.Server({ port: 9000 });
+dataserver.on("connection", function(ws) {
     ws.on("message", function(data) {
-        console.log("Received %s", data);
+        // DEBUG 3 values
+        var parts = data.split(" ");
+        if (parts.length >= 3) {
+            r2state.timestamp = Date.now();
+            r2state.positionX = parseFloat(parts[0]);
+            r2state.positionY = parseFloat(parts[1]);
+            r2state.rotation  = parseFloat(parts[2]) / 180.0 * Math.PI;
+        }
+    });
+});
+
+var imuclient = new WebSockets.Server({ port: 9040 });
+var imuclientconn;
+var imudata0 = "";
+var imudata1 = "";
+imuclient.on("connection", function(ws) {
+    imuclientconn = ws;
+    ws.on("message", function(data) {
+        if (data == "req") {
+            ws.send(imudata0);
+            ws.send(imudata1);
+        }
+    });
+    ws.on("close", function() {
+        imuclientconn = undefined;
+    });
+});
+
+var imuserver = new WebSockets.Server({ port: 9050 });
+imuserver.on("connection", function(ws) {
+    ws.on("message", function(data) {
+        // Send to sensors
+        if (data[0] == "0") {
+            imudata0 = data;
+        }
+        else if (data[0] == "1") {
+            imudata1 = data;
+        }
     });
 });
 
@@ -27,12 +64,6 @@ sio.on("connection", function(socket) {
     console.log("Client connected");
     var counter = 0;
     socket.on("req", function(data) {
-        var time = Date.now();
-        r2state.timestamp = time;
-        var angle = (r2state.timestamp / 1200.0) % (2.0 * Math.PI);
-        r2state.positionX = 100 * Math.cos(angle);
-        r2state.positionY = 100 * Math.sin(angle);
-        r2state.rotation = -angle;
         socket.emit("state", r2state);
     });
     socket.on("disconnect", function() {

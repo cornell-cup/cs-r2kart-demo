@@ -81,7 +81,7 @@ function frame(state) {
     // R2 icon
     ctx.save();
     ctx.translate(320, 320);
-    ctx.rotate(state.rotation);
+    ctx.rotate(-state.rotation);
     ctx.drawImage(r2icon, -32, -32, 64, 64);
     ctx.restore();
     
