@@ -7,6 +7,8 @@
 #include <ws2tcpip.h>
 #pragma comment (lib, "Ws2_32.lib")
 
+#include <armadillo.hpp>
+
 #include "R2State.h"
 #include "Sensor.h"
 #include "SensorData.h"
@@ -108,7 +110,26 @@ void getSensorData(std::vector<Sensor *> slist, SensorDataBag * sdata) {
  * @param sdata		Bag of sensor data
  */
 R2State updateState(SensorDataBag * sdata) {
-	return R2State();
+	// Initialize a default state
+	R2State state;
+
+	// Highway
+	HighwayData * hd = sdata->highway;
+	if (hd->hasData) {
+		state.highway = hd->detected;
+	}
+
+	// Ultrasound
+	UltrasoundData * ud = sdata->ultrasound;
+	if (ud->hasData) {
+		for (int i = 0; i < ud->numSensors; i++) {
+			state.ultrasound.push_back(ud->distances[i]);
+		}
+	}
+
+	// TODO Kalman Filter IMU
+
+	return state;
 }
 
 /**

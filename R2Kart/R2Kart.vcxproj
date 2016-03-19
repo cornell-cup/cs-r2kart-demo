@@ -154,6 +154,7 @@
     <ClInclude Include="HighwaySensor.h" />
     <ClInclude Include="IMUData.h" />
     <ClInclude Include="IMUSensor.h" />
+    <ClInclude Include="KalmanFilter.h" />
     <ClInclude Include="KinectData.h" />
     <ClInclude Include="KinectSensor.h" />
     <ClInclude Include="LidarData.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="HighwaySensor.cpp" />
     <ClCompile Include="IMUData.cpp" />
     <ClCompile Include="IMUSensor.cpp" />
+    <ClCompile Include="KalmanFilter.cpp" />
     <ClCompile Include="KinectData.cpp" />
     <ClCompile Include="KinectSensor.cpp" />
     <ClCompile Include="LidarData.cpp" />
