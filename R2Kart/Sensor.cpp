@@ -3,13 +3,13 @@
 
 // TODO Sensor.cpp and Sensor.h
 
-Sensor::Sensor() {
-	// TODO
+Sensor::Sensor(char[] inName, float inId ){
+        name(inName);
+        id(inId);
 }
 
-Sensor::~Sensor() {
-	// TODO
-}
+// destroys the sensor object
+Sensor::~Sensor();
 
 void Sensor::getData(SensorDataBag * sdata) {
 	// TODO
