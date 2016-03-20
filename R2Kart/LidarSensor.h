@@ -1,9 +1,11 @@
 #pragma once
 #include "Sensor.h"
+#include "rplidar.h"
 
 class LidarSensor : public Sensor {
 protected:
 	// Private/protected variables here
+	rp::standalone::rplidar::RPlidarDriver * driver;
 public:
 	// Public variables here
 

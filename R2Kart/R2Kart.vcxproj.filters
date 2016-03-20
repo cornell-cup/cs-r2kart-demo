@@ -25,6 +25,12 @@
     <Filter Include="Source Files\SensorData">
       <UniqueIdentifier>{bbf9995d-77b6-48c5-a03e-fc11ca4b2567}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\KalmanFilter">
+      <UniqueIdentifier>{11f0c2c8-6172-4daa-8b31-9adc743f8bf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\KalmanFilter">
+      <UniqueIdentifier>{57758742-e62c-45e3-91c9-2a4135ec0f77}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -87,14 +93,17 @@
     <ClInclude Include="Obstacle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="KalmanFilter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="easywsclient.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PhoneIMUSensor.h">
       <Filter>Header Files\Sensor</Filter>
+    </ClInclude>
+    <ClInclude Include="KalmanFilter.h">
+      <Filter>Header Files\KalmanFilter</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantKalmanFilter.h">
+      <Filter>Header Files\KalmanFilter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -155,14 +164,17 @@
     <ClCompile Include="Obstacle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="KalmanFilter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="easywsclient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PhoneIMUSensor.cpp">
       <Filter>Source Files\Sensor</Filter>
+    </ClCompile>
+    <ClCompile Include="KalmanFilter.cpp">
+      <Filter>Source Files\KalmanFilter</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantKalmanFilter.cpp">
+      <Filter>Source Files\KalmanFilter</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

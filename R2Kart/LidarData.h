@@ -5,20 +5,16 @@ class LidarData : public SensorData {
 protected:
 	// Private/protected variables here
 public:
-	LidarData(bool inData = false, int inNumReadings = 0, double * inAngles = NULL, double * inDistances = NULL);
+	LidarData(bool inData = false, std::vector<double> inAngles = std::vector<double>(), std::vector<double> inDistances = std::vector<double>());
 	~LidarData();
 
-	/**
-	 * Number of readings
-	 */
-	int numReadings;
 	/*
 	* Array of angles for each point returned
 	*/
-	double * angles;
+	std::vector<double> angles;
 	/*
 	* Array of distances for each point returned. 
 	* Same indexes of angles[] and distance[] correspond to same point
 	*/
-	double * distances;
+	std::vector<double> distances;
 };

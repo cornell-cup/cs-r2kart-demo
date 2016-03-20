@@ -74,10 +74,8 @@ bool raw_serial::open(const char * portname, _u32 baudrate, _u32 flags)
 {
     if (isOpened()) close();
     
-	wchar_t * tmpPort = NULL;
-	mbstowcs(tmpPort, portname, strlen(portname));
-    _serial_handle = CreateFile(
-		tmpPort,
+    _serial_handle = CreateFileA(
+		portname,
         GENERIC_READ | GENERIC_WRITE,
         0,
         NULL,
@@ -85,7 +83,6 @@ bool raw_serial::open(const char * portname, _u32 baudrate, _u32 flags)
         FILE_ATTRIBUTE_NORMAL | FILE_FLAG_OVERLAPPED,
         NULL
         );
-	delete tmpPort;
 
     if (_serial_handle == INVALID_HANDLE_VALUE) return false;
 

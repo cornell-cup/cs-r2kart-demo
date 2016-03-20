@@ -54,26 +54,35 @@ function frame(state) {
     ctx.save();
     
     // Coordinate transform
-    ctx.translate(320 - state.positionX, 320 + state.positionY);
-    ctx.scale(1, -1);
+    ctx.scale(320.0 / 6.0, -320.0 / 6.0);
+    ctx.translate(6.0 - state.positionX, state.positionY - 6.0);
     
     // Origin
     ctx.fillStyle = "red";
-    ctx.fillRect(-16, -16, 32, 32);
+    ctx.fillRect(-0.1, -0.1, 0.2, 0.2);
     
     // Grid
     ctx.strokeStyle = "black";
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 0.02;
     ctx.beginPath();
-    var bx = ~~((state.positionX) / 80);
-    var by = ~~((state.positionY) / 80);
+    var bx = ~~state.positionX;
+    var by = ~~state.positionY;
     for (var i = -6; i <= 6; i++) {
-        ctx.moveTo(80 * (bx + i), 80 * (by - 6));
-        ctx.lineTo(80 * (bx + i), 80 * (by + 6));
-        ctx.moveTo(80 * (bx - 6), 80 * (by + i));
-        ctx.lineTo(80 * (bx + 6), 80 * (by + i));
+        ctx.moveTo(bx + i, by - 6);
+        ctx.lineTo(bx + i, by + 6);
+        ctx.moveTo(bx - 6, by + i);
+        ctx.lineTo(bx + 6, by + i);
     }
     ctx.stroke();
+    
+    // Obstacles
+    ctx.fillStyle = "rgba(0, 0, 255, 0.25)";
+    for (var i = 0; i < r2state.obstacles.length; i++) {
+        var obs = r2state.obstacles[i];
+        ctx.beginPath();
+        ctx.arc(obs[0], obs[1], 0.1, 0.0, 2.0 * Math.PI);
+        ctx.fill();
+    }
     
     // Restore transform
     ctx.restore();
@@ -82,7 +91,7 @@ function frame(state) {
     ctx.save();
     ctx.translate(320, 320);
     ctx.rotate(-state.rotation);
-    ctx.drawImage(r2icon, -32, -32, 64, 64);
+    ctx.drawImage(r2icon, -16, -16, 32, 32);
     ctx.restore();
     
     // Send a new request

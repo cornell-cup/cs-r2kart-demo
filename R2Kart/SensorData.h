@@ -7,8 +7,8 @@ public:
 	SensorData(bool data);
 	~SensorData();
 
-	/*
-	* Sensor availability
-	*/
+	/**
+	 * Sensor availability
+	 */
 	bool hasData;
 };

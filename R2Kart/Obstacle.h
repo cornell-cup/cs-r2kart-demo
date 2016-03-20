@@ -9,8 +9,9 @@ public:
 	 * @param inPosX	The X coordinate of the obstacle
 	 * @param inPosY	The Y coordinate of the obstacle
 	 * @param inRadius	The radius of the obstacle
+	 * @param inHeight	The height of the obstacle
 	 */
-	Obstacle::Obstacle(double inPosX = 0.0, double inPosY = 0.0, double inRadius = 0.0);
+	Obstacle::Obstacle(double inPosX = 0.0, double inPosY = 0.0, double inRadius = 0.0, double inHeight = 0.0);
 
 	/**
 	 * Destructor
@@ -38,4 +39,8 @@ public:
 	 * Radius of the obstacle
 	 */
 	double radius;
+	/**
+	 * Height of the obstacle
+	 */
+	double height;
 };

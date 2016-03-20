@@ -71,14 +71,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\lib\armadillo\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\lib\armadillo;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\armadillo\include;$(SolutionDir)\rplidar_driver\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\armadillo;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)\armadillo\include;$(SolutionDir)\rplidar_driver\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\armadillo;$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -148,6 +150,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConstantKalmanFilter.h" />
     <ClInclude Include="easywsclient.hpp" />
     <ClInclude Include="EncoderData.h" />
     <ClInclude Include="EncoderSensor.h" />
@@ -172,6 +175,7 @@
     <ClInclude Include="UltrasoundSensor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConstantKalmanFilter.cpp" />
     <ClCompile Include="easywsclient.cpp" />
     <ClCompile Include="EncoderData.cpp" />
     <ClCompile Include="EncoderSensor.cpp" />
@@ -199,6 +203,11 @@
     </ClCompile>
     <ClCompile Include="UltrasoundData.cpp" />
     <ClCompile Include="UltrasoundSensor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\rplidar_driver\rplidar_driver.vcxproj">
+      <Project>{28a0fc60-7226-4ad0-9b1a-62265ffaeed6}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,6 +14,7 @@
 #include "Sensor.h"
 #include "SensorData.h"
 #include "SensorDataBag.h"
+#include "LidarSensor.h"
 #include "PhoneIMUSensor.h"
 
 using easywsclient::WebSocket;
@@ -115,8 +116,14 @@ void initialize() {
  */
 std::vector<Sensor *> initializeSensors() {
 	std::vector<Sensor *> sensors;
+
+	// Phone IMU
 	Sensor * phoneimu = new PhoneIMUSensor();
 	sensors.push_back(phoneimu);
+
+	// RP Lidar
+	Sensor * lidar = new LidarSensor("com5");
+	sensors.push_back(lidar);
 
 	return sensors;
 }
@@ -162,9 +169,22 @@ R2State updateState(SensorDataBag * sdata) {
 	// DEBUG position
 	IMUData * id = sdata->imu;
 	if (id != NULL && id->hasData) {
-		state.positionX = 1.0;
-		state.positionY = 1.0;
+		state.positionX = 0.0;
+		state.positionY = 0.0;
 		state.rotation = id->gyroX; // Actually Alpha, which is on the Z axis TODO fix this confusion
+	}
+
+	// Lidar
+	LidarData * ld = sdata->lidar;
+	if (ld != NULL && ld->hasData) {
+		int l = ld->angles.size();
+		for (int i = 0; i < l; i++) {
+			double angle = ld->angles[i];
+			double distance = ld->distances[i];
+			double px = distance * cos(angle * PI / 180.0);
+			double py = distance * sin(angle * PI / 180.0);
+			state.obstacles.push_back(Obstacle(px, py, 0.5, -1.0));
+		}
 	}
 
 	return state;
@@ -178,16 +198,29 @@ R2State updateState(SensorDataBag * sdata) {
 void sendToGui(const R2State &state) {
 	// Send data over the connection
 	if (wsc != NULL) {
-		char buffer[80];
-		sprintf_s(buffer, "%lf %lf %lf", state.positionX, state.positionY, state.rotation);
-		std::string senddata(buffer);
+		bool first;
+
+		// Obstacles
+		std::string sendObstacles = "[";
+		first = true;
+		for (int i = 0; i < state.obstacles.size(); i++) {
+			Obstacle o = state.obstacles[i];
+			if (first) first = false;
+			else sendObstacles += ",";
+
+			sendObstacles += "[" + std::to_string(o.positionX) + "," + std::to_string(o.positionY) + "]";
+		}
+		sendObstacles += "]";
+
+		std::string senddata = std::string("{") +
+			"\"positionX\": " + std::to_string(state.positionX) + "," +
+			"\"positionY\": " + std::to_string(state.positionY) + "," +
+			"\"rotation\": " + std::to_string(state.rotation) + "," +
+			"\"obstacles\": " + sendObstacles + "," +
+			"\"highway\": " + std::to_string(state.highway) +
+		"}";
 		wsc->send(senddata);
 		wsc->poll();
-		/*
-		// Debug message
-		wsc->send("Hello world!");
-		wsc->poll();
-		*/
 	}
 	return;
 }
@@ -202,8 +235,9 @@ int main()
 	// Get the list of sensors
 	std::vector<Sensor *> sensorList = initializeSensors();
 
-	// Forever
-	while (true) {
+	// Forever until exit (escape)
+	bool exit = false;
+	while (!exit) {
 		// Grab the new sensor data
 		SensorDataBag * sdata = new SensorDataBag();
 		getSensorData(sensorList, sdata);
@@ -213,8 +247,18 @@ int main()
 		sendToGui(state);
 		// Delete the data bag
 		delete sdata;
+
+		// Check if exit
+		if (GetAsyncKeyState(VK_ESCAPE)) {
+			exit = true;
+		}
+
 		// DEBUG wait
-		Sleep(50);
+		Sleep(1000);
+	}
+
+	for (auto itr = sensorList.begin(); itr != sensorList.end(); itr++) {
+		delete (*itr);
 	}
 
     return 0;

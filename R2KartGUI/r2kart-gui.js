@@ -13,19 +13,20 @@ var r2state = {
     rotation: 0.0,
     obstacles: [],
     highway: false,
-    ultrasound: {}
+    ultrasound: []
 };
 
 var dataserver = new WebSockets.Server({ port: 9000 });
 dataserver.on("connection", function(ws) {
     ws.on("message", function(data) {
-        // DEBUG 3 values
-        var parts = data.split(" ");
-        if (parts.length >= 3) {
-            r2state.timestamp = Date.now();
-            r2state.positionX = parseFloat(parts[0]);
-            r2state.positionY = parseFloat(parts[1]);
-            r2state.rotation  = parseFloat(parts[2]) / 180.0 * Math.PI;
+        try {
+            var jo = JSON.parse(data);
+            for (i in jo) {
+                r2state[i] = jo[i];
+            }
+        }
+        catch (e) {
+            // Error parsing data as JSON
         }
     });
 });
