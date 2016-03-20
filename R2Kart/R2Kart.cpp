@@ -14,6 +14,7 @@
 #include "Sensor.h"
 #include "SensorData.h"
 #include "SensorDataBag.h"
+#include "KinectSensor.h"
 #include "LidarSensor.h"
 #include "PhoneIMUSensor.h"
 
@@ -122,8 +123,12 @@ std::vector<Sensor *> initializeSensors() {
 	sensors.push_back(phoneimu);
 
 	// RP Lidar
-	Sensor * lidar = new LidarSensor("com5");
-	sensors.push_back(lidar);
+	//Sensor * lidar = new LidarSensor("com5");
+	//sensors.push_back(lidar);
+
+	// Kinect
+	Sensor * kinect = new KinectSensor();
+	sensors.push_back(kinect);
 
 	return sensors;
 }
@@ -171,7 +176,8 @@ R2State updateState(SensorDataBag * sdata) {
 	if (id != NULL && id->hasData) {
 		state.positionX = 0.0;
 		state.positionY = 0.0;
-		state.rotation = id->gyroX; // Actually Alpha, which is on the Z axis TODO fix this confusion
+		// Actually orientation Alpha, which is on the Z axis TODO fix this confusion
+		state.rotation = id->gyroX * PI / 180.0;
 	}
 
 	// Lidar
@@ -181,9 +187,55 @@ R2State updateState(SensorDataBag * sdata) {
 		for (int i = 0; i < l; i++) {
 			double angle = ld->angles[i];
 			double distance = ld->distances[i];
-			double px = distance * cos(angle * PI / 180.0);
-			double py = distance * sin(angle * PI / 180.0);
+			double px = distance * cos(-angle * PI / 180.0);
+			double py = distance * sin(-angle * PI / 180.0);
 			state.obstacles.push_back(Obstacle(px, py, 0.5, -1.0));
+		}
+	}
+
+	// Kinect
+	KinectData * kd = sdata->kinect;
+	if (kd != NULL && kd->hasData) {
+		if (kd->depth != NULL) {
+			// FOV is 58.5 x 46.6
+			// Resolution is 640 x 480
+			// How many good samples there are (need at least 1/8 * 1/3 * 480 to pass)
+			int samplecount[3][640] = {};
+			// Minimum depth (to be used as an obstacle)
+			double mindepth[3][640];
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 640; j++) {
+					mindepth[i][j] = 9999.0;
+				}
+			}
+
+			int index = 0;
+			for (int i = 0; i < 480; i++) {
+				int section = i / 160;
+				for (int j = 0; j < 640; j++) {
+					if (kd->depth[index] > 0) {
+						double m = kd->depth[index] / 1000.0;
+						samplecount[section][j]++;
+						if (m < mindepth[section][j]) {
+							mindepth[section][j] = m;
+						}
+					}
+					index++;
+				}
+			}
+
+			// Convert to obstacles
+			for (int i = 0; i < 3; i++) {
+				for (int j = 0; j < 640; j++) {
+					if (samplecount[i][j] > 20) {
+						double angle = (j - 320.0) * 58.5 / 640.0;
+						double distance = mindepth[i][j];
+						double px = distance * cos(-angle * PI / 180.0);
+						double py = distance * sin(-angle * PI / 180.0);
+						state.obstacles.push_back(Obstacle(px, py, 0.5, i - 1.0));
+					}
+				}
+			}
 		}
 	}
 
@@ -254,7 +306,7 @@ int main()
 		}
 
 		// DEBUG wait
-		Sleep(1000);
+		Sleep(50);
 	}
 
 	for (auto itr = sensorList.begin(); itr != sensorList.end(); itr++) {

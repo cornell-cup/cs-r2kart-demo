@@ -4,6 +4,7 @@
 using namespace rp::standalone::rplidar;
 
 LidarSensor::LidarSensor(std::string inPort) : Sensor("LIDAR"), port(inPort), driver(NULL) {
+	// Connect to the lidar
 	driver = RPlidarDriver::CreateDriver(RPlidarDriver::DRIVER_TYPE_SERIALPORT);
 	if (!driver) {
 		printf("Failed to create RPLIDAR driver\n");
@@ -11,39 +12,60 @@ LidarSensor::LidarSensor(std::string inPort) : Sensor("LIDAR"), port(inPort), dr
 	if (IS_FAIL(driver->connect(port.c_str(), 115200))) {
 		printf("Failed to connect to RPLIDAR\n");
 	}
-	u_result result = driver->startScan();
-	if (IS_FAIL(result)) {
-		printf("%d\n", result);
+	// Wait for a while, then start scanning
+	Sleep(1000);
+	if (IS_FAIL(driver->startScan())) {
 		printf("Failed to start RPLIDAR scanning\n");
 	}
+
+	// Start a background thread for scanning
+	bg_thread = std::thread(&LidarSensor::bg_scan, this);
+	bg_thread.detach();
 }
 
 LidarSensor::~LidarSensor() {
+	bg_done = true;
 	RPlidarDriver::DisposeDriver(driver);
 }
 
-void LidarSensor::getData(SensorDataBag * sdata) {
+void LidarSensor::bg_scan() {
 	u_result result;
-	rplidar_response_measurement_node_t nodes[360 * 2];
-	size_t   count = 720;
 
-	result = driver->grabScanData(nodes, count);
+	while (!bg_done) {
+		rplidar_response_measurement_node_t scan_nodes[NODE_COUNT];
+		node_count = NODE_COUNT;
 
-	if (IS_OK(result) || result == RESULT_OPERATION_TIMEOUT) {
-		driver->ascendScanData(nodes, count);
+		result = driver->grabScanData(scan_nodes, node_count);
 
-		sdata->lidar = new LidarData(true);
+		if (IS_OK(result) || result == RESULT_OPERATION_TIMEOUT) {
+			driver->ascendScanData(scan_nodes, node_count);
 
-		for (int pos = 0; pos < (int)count; ++pos) {
-			double angle = (nodes[pos].angle_q6_checkbit >> RPLIDAR_RESP_MEASUREMENT_ANGLE_SHIFT) / 64.0;
-			double distance = nodes[pos].distance_q2 / 4000.0f;
-			int quality = nodes[pos].sync_quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
+			// Set nodes to newly scanned nodes
+			scan_mutex.lock();
+			angles.clear();
+			distances.clear();
+			for (int i = 0; i < node_count; i++) {
+				double angle = (scan_nodes[i].angle_q6_checkbit >> RPLIDAR_RESP_MEASUREMENT_ANGLE_SHIFT) / 64.0;
+				double distance = scan_nodes[i].distance_q2 / 4000.0f;
+				int quality = scan_nodes[i].sync_quality >> RPLIDAR_RESP_MEASUREMENT_QUALITY_SHIFT;
 
-			if (quality >= 10) {
-				sdata->lidar->angles.push_back(angle);
-				sdata->lidar->distances.push_back(distance);
+				if (quality >= 10) {
+					angles.push_back(angle);
+					distances.push_back(distance);
+				}
 			}
+			scan_mutex.unlock();
 		}
 	}
 }
 
+void LidarSensor::getData(SensorDataBag * sdata) {
+	sdata->lidar = new LidarData(true);
+	scan_mutex.lock();
+	unsigned int l = min(angles.size(), distances.size());
+	for (int i = 0; i < l; i++) {
+		sdata->lidar->angles.push_back(angles[i]);
+		sdata->lidar->distances.push_back(distances[i]);
+	}
+	scan_mutex.unlock();
+}

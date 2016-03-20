@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "R2Kart", "R2Kart\R2Kart.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "rplidar_driver", "rplidar_driver\rplidar_driver.vcxproj", "{28A0FC60-7226-4AD0-9B1A-62265FFAEED6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "R2Kinect", "R2Kinect\R2Kinect.vcxproj", "{D7E3D5C2-E53B-4A0E-A417-93A3A87D29A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{28A0FC60-7226-4AD0-9B1A-62265FFAEED6}.Release|x64.Build.0 = Release|x64
 		{28A0FC60-7226-4AD0-9B1A-62265FFAEED6}.Release|x86.ActiveCfg = Release|Win32
 		{28A0FC60-7226-4AD0-9B1A-62265FFAEED6}.Release|x86.Build.0 = Release|Win32
+		{D7E3D5C2-E53B-4A0E-A417-93A3A87D29A4}.Debug|x64.ActiveCfg = Debug|x64
+		{D7E3D5C2-E53B-4A0E-A417-93A3A87D29A4}.Debug|x64.Build.0 = Debug|x64
+		{D7E3D5C2-E53B-4A0E-A417-93A3A87D29A4}.Debug|x86.ActiveCfg = Debug|Win32
+		{D7E3D5C2-E53B-4A0E-A417-93A3A87D29A4}.Debug|x86.Build.0 = Debug|Win32
+		{D7E3D5C2-E53B-4A0E-A417-93A3A87D29A4}.Release|x64.ActiveCfg = Release|x64
+		{D7E3D5C2-E53B-4A0E-A417-93A3A87D29A4}.Release|x64.Build.0 = Release|x64
+		{D7E3D5C2-E53B-4A0E-A417-93A3A87D29A4}.Release|x86.ActiveCfg = Release|Win32
+		{D7E3D5C2-E53B-4A0E-A417-93A3A87D29A4}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

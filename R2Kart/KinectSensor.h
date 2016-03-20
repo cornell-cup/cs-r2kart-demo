@@ -1,9 +1,13 @@
 #pragma once
 #include "Sensor.h"
+#include "KinectData.h"
+#include "KinectInterface.h"
+#include "Kinect1.h"
 
 class KinectSensor : public Sensor {
 protected:
 	// Private/protected variables here
+	KinectInterface * kinect;
 public:
 	// Public variables here
 

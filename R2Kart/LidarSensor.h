@@ -1,11 +1,28 @@
 #pragma once
+#include <thread>
+#include <mutex>
 #include "Sensor.h"
 #include "rplidar.h"
 
+#define NODE_COUNT 360 * 2
+
 class LidarSensor : public Sensor {
 protected:
-	// Private/protected variables here
+	// RPLidar driver
 	rp::standalone::rplidar::RPlidarDriver * driver;
+
+	// Saved scan data
+	unsigned int node_count = NODE_COUNT;
+	std::vector<double> angles;
+	std::vector<double> distances;
+	// Scan data lock
+	std::mutex scan_mutex;
+
+	// Background scanning thread
+	std::thread bg_thread;
+	bool bg_done = false;
+	// Background scanning function
+	void bg_scan();
 public:
 	// Public variables here
 

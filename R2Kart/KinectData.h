@@ -5,15 +5,15 @@ class KinectData : public SensorData {
 protected:
 	// Private/protected variables here
 public:
-	KinectData(bool hasData, uint32_t * inCamera, uint16_t * inDepth);
+	KinectData(bool hasData, UINT32 * inCamera, UINT16 * inDepth);
 	~KinectData();
 
 	/*
 	* Image seen through the camera
 	*/
-	uint32_t * camera;
+	UINT32 * camera;
 	/*
 	* Depth image seen through camera
 	*/
-	uint16_t * depth;
+	UINT16 * depth;
 };

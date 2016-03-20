@@ -2,14 +2,17 @@
 #include "KinectSensor.h"
 
 KinectSensor::KinectSensor() : Sensor("Kinect") {
-    // TODO connect to the sensor here
+	// Setup Kinect
+	kinect = new Kinect1();
 }
 
 KinectSensor::~KinectSensor() {
-	// TODO clean up
+	delete kinect;
 }
 
 void KinectSensor::getData(SensorDataBag * sdata) {
-	// TODO fill sdata.kinect with proper data
+	UINT32 * colorBuffer = kinect->getColorBuffer();
+	UINT16 * depthBuffer = kinect->getDepthBuffer();
+	sdata->kinect = new KinectData(true, colorBuffer, depthBuffer);
 }
 
